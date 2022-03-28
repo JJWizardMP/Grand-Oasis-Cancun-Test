@@ -48,7 +48,7 @@ Todos los hoteles del grupo oasis tienen centros de consumo estos se clasifican 
 ![](./front-end/assets/views/view_table.png)
 
 
-## Technologies used
+## Tecnologías usadas
 
 #### FRONTEND
 | [React](https://reactjs.org/) |  [React Dom](https://es.reactjs.org/docs/react-dom.html) | [Axios](https://www.npmjs.com/package/axios)  |
