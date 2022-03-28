@@ -35,28 +35,7 @@ function App() {
   };
   const [hour, setHour] = useState(hourobject());
 
-  // Request to api
-  const getData = async (url_api) => {
-    try {
-      let res = await Axios({
-        url: `${url_api}/${day}/${hour}`,
-        method: "get",
-        timeout: 8000,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (res.status === 200) {
-        // test for status you want, etc
-        console.log(res.status);
-      }
-      // Don't forget to return something
-      setDetails(res.data[0]);
-      return res.data;
-    } catch (err) {
-      console.error(err);
-    }
-  };
+
   // Changer format from "hh:mm:ss" to "hh:mm AM/PM"
   const hours12 = (hr) => {
     return (
@@ -76,15 +55,34 @@ function App() {
 
   useEffect(() => {
     const interval = setInterval(() => setHour(hourobject(), 60 * 1000));
-
+    // Request to api
+    const getData = async (url_api) => {
+      try {
+        let res = await Axios({
+          url: `${url_api}/${day}/${hour}`,
+          method: "get",
+          timeout: 8000,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (res.status === 200) {
+          // test for status you want, etc
+          console.log(res.status);
+        }
+        // Don't forget to return something
+        setDetails(res.data[0]);
+        return res.data;
+      } catch (err) {
+        console.error(err);
+      }
+    };
     getData(bars_url).then((res) => setBars(res));
     getData(rest_url).then((res) => setRestaurants(res));
-
     return () => {
       clearInterval(interval);
     };
-    //req()
-  }, [setRestaurants, setBars, setHour]);
+  },[setHour, setBars, setRestaurants, day, hour] );
   return (
     <div className="App">
       <div className="navbar">
@@ -151,7 +149,7 @@ function App() {
         </div>
         <div className="column-result">
           <img src={url_img + details.img_portada} id="background" alt="logo" />
-          <img src={url_img + details.logo} id="logo" alt="business image"/>
+          <img src={url_img + details.logo} id="logo" alt="business"/>
 
           <div className="detailsdiv">
             <div id="ddesc">
