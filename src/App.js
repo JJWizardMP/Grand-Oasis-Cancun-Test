@@ -6,8 +6,8 @@ function App() {
   // Url
   //const url = "https://oasis-express-app.herokuapp.com/apiv1/";
   const url_img = "https://api-onow.oasishoteles.net/";
-  const rest_url = "https://oasis-express-app.herokuapp.com/apiv1/restaurants";
-  const bars_url = "https://oasis-express-app.herokuapp.com/apiv1/bars";
+  const rest_url = "https://0.0.0.0:5000/apiv1/restaurants";
+  const bars_url = "https://0.0.0.0:5000/apiv1/bars";
   // Set States
   const [restaurants, setRestaurants] = useState([]);
   const [bars, setBars] = useState([]);
@@ -52,11 +52,8 @@ function App() {
     let idcent = parseInt(e.target.getAttribute("data-id"));
     setDetails(bars.concat(restaurants).filter((e) => e.id === idcent)[0]);
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => setHour(hourobject(), 60 * 1000));
-    // Request to api
-    const getData = async (url_api) => {
+   // Request to api
+  const getData = async (url_api) => {
       try {
         let res = await Axios({
           url: `${url_api}/${day}/${hour}`,
@@ -71,14 +68,16 @@ function App() {
           console.log(res.status);
         }
         // Don't forget to return something
-        setDetails(res.data[0]);
         return res.data;
       } catch (err) {
         console.error(err);
       }
     };
-    getData(bars_url).then((res) => setBars(res));
-    getData(rest_url).then((res) => setRestaurants(res));
+  getData(bars_url).then((res) => setBars(res));
+  getData(rest_url).then((res) => setRestaurants(res));
+
+  useEffect(() => {
+    const interval = setInterval(() => setHour(hourobject(), 60 * 1000));
     return () => {
       clearInterval(interval);
     };
