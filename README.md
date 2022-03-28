@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-# Grand-Oasis-Cancun-Test
-Grand Oasis Cancun Test
-=======
 ## GRAND CARIBE CANCUN TEST DEVELOPER
 
 ![](https://www.viajandopormexico.com.mx/cun%20grand%20oasis%20front.png)
@@ -43,7 +39,7 @@ Todos los hoteles del grupo oasis tienen centros de consumo estos se clasifican 
 
 ## Demo
 
-- [Demo](https://aquamarine-mooncake-733b87.netlify.app/)
+- [Demo](https://fintech-dashboard.netlify.app)
 - [Repository](https://github.com/JJWizardMP/Grand-Oasis-Cancun-Test)
 
 ## Imágenes
@@ -105,4 +101,3 @@ $ create-react-app
 Este proyecto fue realizado por:
 - FULLSTACK :
   - [Joan de Jesús Méndez Pool](https://github.com/JJWizardMP)
->>>>>>> Stashed changes
