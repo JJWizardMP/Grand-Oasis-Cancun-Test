@@ -39,7 +39,7 @@ Todos los hoteles del grupo oasis tienen centros de consumo estos se clasifican 
 
 ## Demo
 
-- [Demo](https://fintech-dashboard.netlify.app)
+- [Demo](https://aquamarine-mooncake-733b87.netlify.app)
 - [Repository](https://github.com/JJWizardMP/Grand-Oasis-Cancun-Test)
 
 ## Imágenes
