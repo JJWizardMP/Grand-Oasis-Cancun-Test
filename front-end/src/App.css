@@ -1,0 +1,275 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  flex-wrap: wrap;
+  gap: 10px;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.column {
+  flex: 1;
+  text-align: center;
+  border: 1px solid black;
+  background-color: white;
+  height: 90vh;
+  overflow: scroll;
+  scroll-behavior: smooth;
+  padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.column-bar {
+  flex: 1;
+  text-align: center;
+  color: white;
+  border: 1px solid white;
+  background-color: rgb(66, 66, 66);
+  height: 90vh;
+  overflow: scroll;
+  scroll-behavior: smooth;
+  padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.coltitle {
+  margin-top: 0px;
+  text-transform: uppercase;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+
+.navbar {
+  background-color: #bf0811;
+  display: flex;
+}
+
+.navbar p {
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.navbar .title {
+  font-weight: bold;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-top: 1px solid black;
+  padding-top: 15px;
+  padding-bottom: 1px;
+}
+.card #name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+.card #concept {
+  color: #bf0811;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.card #isopen {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.card #time {
+  margin-top: 0px;
+}
+
+.innercard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.innercard .incbutton {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.incbutton:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.innercard .incbutton-active {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.innertimecard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.card-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-top: 1px solid black;
+  padding-top: 15px;
+  padding-bottom: 1px;
+}
+.card-bar #name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+.card-bar #isopen {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.card-bar #time {
+  margin-top: 0px;
+}
+
+.innercard-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.innercard-bar .incbutton-bar {
+  background-color: transparent;
+  color: white;
+  border-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.incbutton-bar:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.innercard-bar .incbutton-active-bar {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.innertimecard-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.column-result {
+  flex: 1;
+  text-align: center;
+  border: 1px solid black;
+  background-color: white;
+  height: 90vh;
+  overflow: scroll;
+  scroll-behavior: smooth;
+  padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+#logo {
+  width: auto;
+  height: 120px;
+  z-index: 200;
+  margin-top: -100px;
+}
+
+#background {
+  width: 100%;
+  height: 300px;
+  z-index: 10;
+  margin-bottom: -100px;
+}
+
+.detailsdiv {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  color: black;
+}
+
+#ddesc {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+  height: 20%;
+  padding-right: 25px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-right: 1px solid gray;
+}
+#ddesc p {
+  margin-left: 0px;
+  margin-top: 0px;
+  text-align: left;
+}
+#dtitle {
+  font-weight: bold;
+}
+
+#dtime {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+  height: 30%;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
