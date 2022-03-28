@@ -45,7 +45,7 @@ Todos los hoteles del grupo oasis tienen centros de consumo estos se clasifican 
 ## Imágenes
 
 ### Vista de la tabla
-![](./front-end/src/assets/views/view_table.png)
+![](./front-end/assets/views/view_table.png)
 
 
 ## Technologies used
