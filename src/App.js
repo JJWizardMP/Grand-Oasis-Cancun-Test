@@ -4,10 +4,10 @@ import "./App.css";
 
 function App() {
   // Url
-  //const url = "http://0.0.0.0:5000/apiv1/";
+  //const url = "https://oasis-express-app.herokuapp.com/apiv1/";
   const url_img = "https://api-onow.oasishoteles.net/";
-  const rest_url = "http://0.0.0.0:5000/apiv1/restaurants";
-  const bars_url = "http://0.0.0.0:5000/apiv1/bars";
+  const rest_url = "https://oasis-express-app.herokuapp.com/apiv1/restaurants";
+  const bars_url = "https://oasis-express-app.herokuapp.com/apiv1/bars";
   // Set States
   const [restaurants, setRestaurants] = useState([]);
   const [bars, setBars] = useState([]);
