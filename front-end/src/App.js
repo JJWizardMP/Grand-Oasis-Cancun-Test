@@ -8,7 +8,10 @@ function App() {
   const url_img = "https://api-onow.oasishoteles.net/";
   const rest_url = "http://0.0.0.0:5000/apiv1/restaurants";
   const bars_url = "http://0.0.0.0:5000/apiv1/bars";
+  const hot_url = "http://0.0.0.0:5000/apiv1/hotels";
   // Set States
+  const [hotel, setHotel] = useState(1);
+  const [hotels, setHotels] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [bars, setBars] = useState([]);
   const [details, setDetails] = useState({
@@ -52,13 +55,12 @@ function App() {
     setDetails(bars.concat(restaurants).filter((e) => e.id === idcent)[0]);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => setHour(hourobject(), 60 * 1000));
-    // Request to api
+  const handleChangeHotel = (e) => {
+    let {name, value} = e.target;
     const getData = async (url_api) => {
       try {
         let res = await Axios({
-          url: `${url_api}/${day}/${hour}`,
+          url: `${url_api}/${day}/${hotel}/${hour}`,
           method: "get",
           timeout: 8000,
           headers: {
@@ -76,23 +78,92 @@ function App() {
         console.error(err);
       }
     };
-    if(bars.length === 0){
+    setHotel(value);
+    getData(bars_url).then((res) => setBars(res));
+    getData(rest_url).then((res) => setRestaurants(res));
+
+  }
+  useEffect(() => {
+    const interval = setInterval(() => setHour(hourobject(), 60 * 1000));
+    // Request to api
+    const getData = async (url_api) => {
+      try {
+        let res = await Axios({
+          url: `${url_api}/${day}/${hotel}/${hour}`,
+          method: "get",
+          timeout: 8000,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (res.status === 200) {
+          // test for status you want, etc
+          console.log(res.status);
+        }
+        // Don't forget to return something
+        setDetails(res.data[0]);
+        return res.data;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const getHotels = async (url_api) => {
+      try {
+        let res = await Axios({
+          url: `${url_api}`,
+          method: "get",
+          timeout: 8000,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (res.status === 200) {
+          // test for status you want, etc
+          console.log(res.status);
+        }
+        // Don't forget to return something
+        return res.data;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (hotels.length === 0) {
+      getHotels(hot_url).then((res) => setHotels(res));
+    }
+    if (bars.length === 0) {
       getData(bars_url).then((res) => setBars(res));
     }
-    if(restaurants.length === 0){ 
+    if (restaurants.length === 0) {
       getData(rest_url).then((res) => setRestaurants(res));
     }
     return () => {
       clearInterval(interval);
     };
     //req()
-  }, [day, hour, setHour, restaurants, setRestaurants, bars, setBars, details]);
+  }, [
+    day,
+    hour,
+    setHour,
+    restaurants,
+    setRestaurants,
+    bars,
+    setBars,
+    setDetails,
+  ]);
   return (
     <div className="App">
       <div className="navbar">
         <p className="title">GRAND OASIS CANCUN |</p>
         <p className="hour">{hours12(hour)}</p>
         <p className="date">{date}</p>
+        <span> | </span>
+        <label htmlFor="hotels">Choose a hotel:</label>
+        <select name="hotels" id="hotels" onChange={handleChangeHotel}>
+          {hotels.map((res, ind) => (
+            <option value={res.id} key={ind}>{res.nombre}</option>
+          ))}
+        </select>
       </div>
       <section className="container">
         <div className="column">
