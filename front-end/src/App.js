@@ -125,7 +125,7 @@ function App() {
     <div className="App">
       <div className="navbar">
         <section id="greeting">
-          <p className="title">GRAND OASIS CANCUN &emsp;| </p>
+          <p className="title">GRAND OASIS CANCUN &ensp;| </p>
           <p className="hour">{hours12(hour)}</p>
           <p className="date">{date}</p>
         </section>
