@@ -47,9 +47,36 @@
 .navbar {
   background-color: #bf0811;
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
+.navbar #greeting {
+  display: flex;
+  color: white;
+  font-size: 20px;
+}
+
+.navbar #hotelsform{
+  display: flex;
+  color: white;
+  font-size: 20px;
+  padding-right: 10px;
+}
 .navbar p {
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.navbar label{
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.navbar span{
   color: white;
   font-size: 20px;
   padding: 10px;
@@ -57,6 +84,14 @@
 
 .navbar .title {
   font-weight: bold;
+}
+
+.navbar select{
+  width: auto;
+  height: 50px;
+  background-color: white;
+  font-size: 20px;
+  padding-left: 10px;
 }
 
 .card {

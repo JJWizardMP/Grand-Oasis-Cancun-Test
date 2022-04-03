@@ -14,13 +14,7 @@ function App() {
   const [hotels, setHotels] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [bars, setBars] = useState([]);
-  const [details, setDetails] = useState({
-    id: 0,
-    logo: "",
-    img_portada: "",
-    hora_inicio: "00:00:00",
-    hora_final: "00:00:00",
-  });
+  const [details, setDetails] = useState({state:"state"});
   // Date and Hours values
   const [day] = useState(new Date().getDay() + 1);
   const [date] = useState(
@@ -41,11 +35,13 @@ function App() {
   // Changer format from "hh:mm:ss" to "hh:mm AM/PM"
   const hours12 = (hr) => {
     return (
-      (parseInt(hr.split(":")[0]) % 12) +
+      (parseInt(hr.split(":")[0]) >= 12
+        ? parseInt(hr.split(":")[0]) % 12
+        : hr.split(":")[0]) +
       ":" +
       hr.split(":")[1] +
       " " +
-      (parseInt(hr.split(":")[0]) / 12 > 1 ? "PM" : "AM")
+      (parseInt(hr.split(":")[0]) >= 12 ? "PM" : "AM")
     );
   };
   // Handle all details state
@@ -56,10 +52,12 @@ function App() {
   };
 
   const handleChangeHotel = (e) => {
-    let {name, value} = e.target;
-    const getData = async (url_api) => {
+    let value = parseInt(e.target.value);
+    setHotel(value);
+    //setHotel(value);
+    const getData = async (url_api, hotel) => {
       try {
-        let res = await Axios({
+        let response = await Axios({
           url: `${url_api}/${day}/${hotel}/${hour}`,
           method: "get",
           timeout: 8000,
@@ -67,28 +65,22 @@ function App() {
             "Content-Type": "application/json",
           },
         });
-        if (res.status === 200) {
-          // test for status you want, etc
-          console.log(res.status);
-        }
         // Don't forget to return something
-        setDetails(res.data[0]);
-        return res.data;
+        setDetails(response.data[0] ? response.data[0] : {});
+        return response.data;
       } catch (err) {
         console.error(err);
       }
     };
-    setHotel(value);
-    getData(bars_url).then((res) => setBars(res));
-    getData(rest_url).then((res) => setRestaurants(res));
-
-  }
+    getData(bars_url, value).then((res) => setBars(res));
+    getData(rest_url, value).then((res) => setRestaurants(res));
+  };
   useEffect(() => {
-    const interval = setInterval(() => setHour(hourobject(), 60 * 1000));
+    const interval = setInterval(() => setHour(hourobject(), 1000));
     // Request to api
     const getData = async (url_api) => {
       try {
-        let res = await Axios({
+        let response = await Axios({
           url: `${url_api}/${day}/${hotel}/${hour}`,
           method: "get",
           timeout: 8000,
@@ -96,13 +88,9 @@ function App() {
             "Content-Type": "application/json",
           },
         });
-        if (res.status === 200) {
-          // test for status you want, etc
-          console.log(res.status);
-        }
         // Don't forget to return something
-        setDetails(res.data[0]);
-        return res.data;
+        setDetails(response.data[0] ? response.data[0] : {});
+        return response.data;
       } catch (err) {
         console.error(err);
       }
@@ -110,7 +98,7 @@ function App() {
 
     const getHotels = async (url_api) => {
       try {
-        let res = await Axios({
+        let response = await Axios({
           url: `${url_api}`,
           method: "get",
           timeout: 8000,
@@ -118,127 +106,130 @@ function App() {
             "Content-Type": "application/json",
           },
         });
-        if (res.status === 200) {
-          // test for status you want, etc
-          console.log(res.status);
-        }
         // Don't forget to return something
-        return res.data;
+        return response.data;
       } catch (err) {
         console.error(err);
       }
     };
-    if (hotels.length === 0) {
-      getHotels(hot_url).then((res) => setHotels(res));
-    }
-    if (bars.length === 0) {
-      getData(bars_url).then((res) => setBars(res));
-    }
-    if (restaurants.length === 0) {
-      getData(rest_url).then((res) => setRestaurants(res));
-    }
+    getHotels(hot_url).then((res) => setHotels(res));
+    getData(bars_url).then((res) => setBars(res));
+    getData(rest_url).then((res) => setRestaurants(res));
+    
     return () => {
       clearInterval(interval);
     };
-    //req()
-  }, [
-    day,
-    hour,
-    setHour,
-    restaurants,
-    setRestaurants,
-    bars,
-    setBars,
-    setDetails,
-  ]);
+  }, []);
+
   return (
     <div className="App">
       <div className="navbar">
-        <p className="title">GRAND OASIS CANCUN |</p>
-        <p className="hour">{hours12(hour)}</p>
-        <p className="date">{date}</p>
-        <span> | </span>
-        <label htmlFor="hotels">Choose a hotel:</label>
-        <select name="hotels" id="hotels" onChange={handleChangeHotel}>
-          {hotels.map((res, ind) => (
-            <option value={res.id} key={ind}>{res.nombre}</option>
-          ))}
-        </select>
+        <section id="greeting">
+          <p className="title">GRAND OASIS CANCUN &emsp;| </p>
+          <p className="hour">{hours12(hour)}</p>
+          <p className="date">{date}</p>
+        </section>
+        <section id="hotelsform">
+          <label htmlFor="hotels">Choose a hotel :&ensp;</label>
+          <select name="hotels" id="hotels" onChange={handleChangeHotel}>
+            {hotels.map((res, ind) => (
+              <option value={res.id} key={ind}>
+                {res.nombre}
+              </option>
+            ))}
+          </select>
+        </section>
       </div>
       <section className="container">
         <div className="column">
           <h1 className="coltitle">Restaurantes</h1>
           <div>
-            {restaurants.map((res, ind) => (
-              <div className="card" id={res.id} key={ind}>
-                <h5 id="name">{res.nombre}</h5>
-                <p id="concept">{res.concepto_en}</p>
-                <p id="concept">{res.concepto_es}</p>
-                <div className="innercard">
-                  <div className="innertimecard">
-                    <span id="isopen"> ABIERTO HOY </span>
-                    <p id="time">
-                      {" "}
-                      {hours12(res.hora_inicio)} - {hours12(res.hora_final)}
-                    </p>
+            {restaurants && (
+              <>
+                {restaurants.map((res, ind) => (
+                  <div className="card" id={res.id} key={ind}>
+                    <h5 id="name">{res.nombre}</h5>
+                    <p id="concept">{res.concepto_en}</p>
+                    <p id="concept">{res.concepto_es}</p>
+                    <div className="innercard">
+                      <div className="innertimecard">
+                        <span id="isopen"> ABIERTO HOY </span>
+                        <p id="time">
+                          {" "}
+                          {hours12(res.hora_inicio)} - {hours12(res.hora_final)}
+                        </p>
+                      </div>
+                      <button
+                        className="incbutton"
+                        data-id={res.id}
+                        onClick={handleChange}
+                      >
+                        VER MÁS
+                      </button>
+                    </div>
                   </div>
-                  <button
-                    className="incbutton"
-                    data-id={res.id}
-                    onClick={handleChange}
-                  >
-                    VER MÁS
-                  </button>
-                </div>
-              </div>
-            ))}
+                ))}
+              </>
+            )}
           </div>
         </div>
         <div className="column-bar">
           <h1 className="coltitle">Bares</h1>
           <div>
-            {bars.map((bar, ind) => (
-              <div className="card-bar" key={ind}>
-                <h5 id="name">{bar.nombre}</h5>
-                <div className="innercard-bar">
-                  <div>
-                    {" "}
-                    <span id="isopen"> ABIERTO HOY </span>
-                    <p id="time">
-                      {" "}
-                      {hours12(bar.hora_inicio)} - {hours12(bar.hora_final)}
-                    </p>{" "}
-                  </div>
+            {bars && (
+              <>
+                {bars.map((bar, ind) => (
+                  <div className="card-bar" key={ind}>
+                    <h5 id="name">{bar.nombre}</h5>
+                    <div className="innercard-bar">
+                      <div>
+                        {" "}
+                        <span id="isopen"> ABIERTO HOY </span>
+                        <p id="time">
+                          {" "}
+                          {hours12(bar.hora_inicio)} - {hours12(bar.hora_final)}
+                        </p>{" "}
+                      </div>
 
-                  <button
-                    className="incbutton-bar"
-                    data-id={bar.id}
-                    onClick={handleChange}
-                  >
-                    VER MÁS
-                  </button>
-                </div>
-              </div>
-            ))}
+                      <button
+                        className="incbutton-bar"
+                        data-id={bar.id}
+                        onClick={handleChange}
+                      >
+                        VER MÁS
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
         <div className="column-result">
-          <img src={url_img + details.img_portada} id="background" alt="logo" />
-          <img src={url_img + details.logo} id="logo" alt="business" />
-
-          <div className="detailsdiv">
-            <div id="ddesc">
-              <p id="dtitle">{details.nombre}</p>
-              <p>{details.concepto_en}</p>
-              <p>{details.concepto_es}</p>
-            </div>
-            <div id="dtime">
-              <span> ABIERTO HOY </span>
-              <p>
-                {hours12(details.hora_inicio)} - {hours12(details.hora_final)}
-              </p>
-            </div>
-          </div>
+          {details.hasOwnProperty("id") && (
+            <>
+              <img
+                src={url_img + details.img_portada}
+                id="background"
+                alt="logo"
+              />
+              <img src={url_img + details.logo} id="logo" alt="business" />
+              <div className="detailsdiv">
+                <div id="ddesc">
+                  <p id="dtitle">{details.nombre}</p>
+                  <p>{details.concepto_en}</p>
+                  <p>{details.concepto_es}</p>
+                </div>
+                <div id="dtime">
+                  <span> ABIERTO HOY </span>
+                  <p>
+                    {hours12(details.hora_inicio)} -{" "}
+                    {hours12(details.hora_final)}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </section>
     </div>
