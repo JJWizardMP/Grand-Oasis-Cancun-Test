@@ -47,18 +47,64 @@
 .navbar {
   background-color: #bf0811;
   display: flex;
+<<<<<<< HEAD
 }
 
+=======
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar #greeting {
+  display: flex;
+  color: white;
+  font-size: 20px;
+}
+
+.navbar #hotelsform{
+  display: flex;
+  color: white;
+  font-size: 20px;
+  padding-right: 10px;
+}
+>>>>>>> development
 .navbar p {
   color: white;
   font-size: 20px;
   padding: 10px;
 }
 
+<<<<<<< HEAD
+=======
+.navbar label{
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.navbar span{
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+}
+
+>>>>>>> development
 .navbar .title {
   font-weight: bold;
 }
 
+<<<<<<< HEAD
+=======
+.navbar select{
+  width: auto;
+  height: 50px;
+  background-color: white;
+  font-size: 20px;
+  padding-left: 10px;
+}
+
+>>>>>>> development
 .card {
   display: flex;
   flex-direction: column;
@@ -272,4 +318,8 @@
   padding-right: 25px;
   padding-top: 15px;
   padding-bottom: 15px;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> development
