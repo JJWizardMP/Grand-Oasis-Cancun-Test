@@ -1,23 +1,25 @@
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import "./App.css";
+import NavBar from "./components/navbar/navbar";
+import Details from "./components/details/details";
+import RestaurantsColumn from "./components/restaurantscolumn/restaurantscolumn";
+import BarsColumn from "./components/barscolumn/barscolumn";
 
 function App() {
   // Url
-  //const url = "https://oasis-express-app.herokuapp.com/apiv1/";
+  const url = "http://0.0.0.0:5000/apiv1";
+  const rest_endpoint = "restaurants";
+  const bars_endpoint = "bars";
+  const hotels_endpoint = "hotels";
   const url_img = "https://api-onow.oasishoteles.net/";
-  const rest_url = "https://oasis-express-app.herokuapp.com/apiv1/restaurants";
-  const bars_url = "https://oasis-express-app.herokuapp.com/apiv1/bars";
   // Set States
+  const [initapi, setInitapi] = useState(true);
+  const [hotel, setHotel] = useState(1);
+  const [hotels, setHotels] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [bars, setBars] = useState([]);
-  const [details, setDetails] = useState({
-    id: 0,
-    logo: "",
-    img_portada: "",
-    hora_inicio: "00:00:00",
-    hora_final: "00:00:00",
-  });
+  const [details, setDetails] = useState({});
   // Date and Hours values
   const [day] = useState(new Date().getDay() + 1);
   const [date] = useState(
@@ -38,11 +40,13 @@ function App() {
   // Changer format from "hh:mm:ss" to "hh:mm AM/PM"
   const hours12 = (hr) => {
     return (
-      (parseInt(hr.split(":")[0]) % 12) +
+      (parseInt(hr.split(":")[0]) >= 12
+        ? parseInt(hr.split(":")[0]) % 12
+        : hr.split(":")[0]) +
       ":" +
       hr.split(":")[1] +
       " " +
-      (parseInt(hr.split(":")[0]) / 12 > 1 ? "PM" : "AM")
+      (parseInt(hr.split(":")[0]) >= 12 ? "PM" : "AM")
     );
   };
   // Handle all details state
@@ -51,123 +55,110 @@ function App() {
     let idcent = parseInt(e.target.getAttribute("data-id"));
     setDetails(bars.concat(restaurants).filter((e) => e.id === idcent)[0]);
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => setHour(hourobject(), 60 * 1000));
-    // Request to api
-    const getData = async (url_api) => {
+  //Handle change hotel
+  const handleChangeHotel = (e) => {
+    let value = parseInt(e.target.value);
+    setHotel(value);
+    const getData = async (url_api, endpoint, hotel) => {
       try {
-        let res = await Axios({
-          url: `${url_api}/${day}/${hour}`,
+        let response = await Axios({
+          url: `${url_api}/${endpoint}/${day}/${hotel}/${hour}`,
           method: "get",
           timeout: 8000,
           headers: {
             "Content-Type": "application/json",
           },
         });
-        if (res.status === 200) {
-          // test for status you want, etc
-          console.log(res.status);
-        }
         // Don't forget to return something
-        setDetails(res.data[0]);
-        return res.data;
+        setDetails(response.data[0] ? response.data[0] : {});
+        return response.data;
       } catch (err) {
         console.error(err);
       }
     };
-    if(bars.length === 0){
-      getData(bars_url).then((res) => setBars(res));
-    }
-    if(restaurants.length === 0){ 
-      getData(rest_url).then((res) => setRestaurants(res));
+    getData(url, bars_endpoint, value).then((res) => setBars(res));
+    getData(url, rest_endpoint, value).then((res) => setRestaurants(res));
+  };
+  useEffect(() => {
+    const interval = setInterval(() => setHour(hourobject(), 60 * 1000));
+    // Request to api
+    const getData = async (url_api, endpoint) => {
+      try {
+        let response = await Axios({
+          url: `${url_api}/${endpoint}/${day}/${hotel}/${hour}`,
+          method: "get",
+          timeout: 8000,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        // Don't forget to return something
+        setDetails(response.data[0] ? response.data[0] : {});
+        return response.data;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const getHotels = async (url_api, endpoint) => {
+      try {
+        let response = await Axios({
+          url: `${url_api}/${endpoint}`,
+          method: "get",
+          timeout: 8000,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        // Don't forget to return something
+        return response.data;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (initapi) {
+      setInitapi(false)
+      getHotels(url, hotels_endpoint).then((res) => setHotels(res));
+      getData(url, bars_endpoint).then((res) => setBars(res));
+      getData(url, rest_endpoint).then((res) => setRestaurants(res));
     }
     return () => {
       clearInterval(interval);
     };
-    //req()
-  }, [day, hour, setHour, restaurants, setRestaurants, bars, setBars, details]);
+  }, [day, hotel, hour, initapi]);
+
   return (
     <div className="App">
-      <div className="navbar">
-        <p className="title">GRAND OASIS CANCUN |</p>
-        <p className="hour">{hours12(hour)}</p>
-        <p className="date">{date}</p>
-      </div>
+      <NavBar
+        hours12={hours12}
+        handleChangeHotel={handleChangeHotel}
+        hour={hour}
+        date={date}
+        hotels={hotels}
+      />
       <section className="container">
         <div className="column">
           <h1 className="coltitle">Restaurantes</h1>
           <div>
-            {restaurants.map((res, ind) => (
-              <div className="card" id={res.id} key={ind}>
-                <h5 id="name">{res.nombre}</h5>
-                <p id="concept">{res.concepto_en}</p>
-                <p id="concept">{res.concepto_es}</p>
-                <div className="innercard">
-                  <div className="innertimecard">
-                    <span id="isopen"> ABIERTO HOY </span>
-                    <p id="time">
-                      {" "}
-                      {hours12(res.hora_inicio)} - {hours12(res.hora_final)}
-                    </p>
-                  </div>
-                  <button
-                    className="incbutton"
-                    data-id={res.id}
-                    onClick={handleChange}
-                  >
-                    VER MÁS
-                  </button>
-                </div>
-              </div>
-            ))}
+            <RestaurantsColumn
+              restaurants={restaurants}
+              hours12={hours12}
+              handleChange={handleChange}
+            />
           </div>
         </div>
         <div className="column-bar">
           <h1 className="coltitle">Bares</h1>
           <div>
-            {bars.map((bar, ind) => (
-              <div className="card-bar" key={ind}>
-                <h5 id="name">{bar.nombre}</h5>
-                <div className="innercard-bar">
-                  <div>
-                    {" "}
-                    <span id="isopen"> ABIERTO HOY </span>
-                    <p id="time">
-                      {" "}
-                      {hours12(bar.hora_inicio)} - {hours12(bar.hora_final)}
-                    </p>{" "}
-                  </div>
-
-                  <button
-                    className="incbutton-bar"
-                    data-id={bar.id}
-                    onClick={handleChange}
-                  >
-                    VER MÁS
-                  </button>
-                </div>
-              </div>
-            ))}
+            <BarsColumn
+              bars={bars}
+              hours12={hours12}
+              handleChange={handleChange}
+            />
           </div>
         </div>
         <div className="column-result">
-          <img src={url_img + details.img_portada} id="background" alt="logo" />
-          <img src={url_img + details.logo} id="logo" alt="business" />
-
-          <div className="detailsdiv">
-            <div id="ddesc">
-              <p id="dtitle">{details.nombre}</p>
-              <p>{details.concepto_en}</p>
-              <p>{details.concepto_es}</p>
-            </div>
-            <div id="dtime">
-              <span> ABIERTO HOY </span>
-              <p>
-                {hours12(details.hora_inicio)} - {hours12(details.hora_final)}
-              </p>
-            </div>
-          </div>
+          <Details hours12={hours12} url_img={url_img} details={details} />
         </div>
       </section>
     </div>

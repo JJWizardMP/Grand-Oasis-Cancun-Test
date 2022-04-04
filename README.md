@@ -1,103 +1,70 @@
-## GRAND CARIBE CANCUN TEST DEVELOPER
+# Getting Started with Create React App
 
-![](https://www.viajandopormexico.com.mx/cun%20grand%20oasis%20front.png)
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Introducción
+## Available Scripts
 
-Todos los hoteles del grupo oasis tienen centros de consumo estos se clasifican en Restaurantes y Bares se necesita crear una vista que contenga 3 columnas con lo siguiente:
- 
+In the project directory, you can run:
 
-1) Primer columna
-    -   Listar todos los Restaurantes del Grand oasis Cancún
-    -   Mostrar el nombre del restaurante
-    -   Mostrar el concepto de su categoría
-    -   Mostrar su horario
-    -   Un botón de ver más
+### `npm start`
 
-2) Segunda Columna
-    -   Listar todos los Bares Grand oasis Cancún
-    -   Mostrar el nombre del restaurante
-    -   Mostrar su horario
-    -   Un botón de ver más
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-3) Tercer columna
-    -   Esta columna es la de detalle debe mostrar información cuando le den click al botón ver más de las columnas anteriores
-    -   Nombre del centro de consumo
-    -   Concepto
-    -   Logo
-    -   Imagen de portada 
-    -   Mostrar su horario
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
+### `npm test`
 
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Requerimientos
+### `npm run build`
 
-* Generar un Api:  Se adjunta una base de datos msyql para que generen sus endpoints en el lenguaje que deseen.
- 
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-* Consumir el Api: Consumir sus endpoints de preferencia con React  o algún Framework de su preferencia (Angular o Vue)
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## Demo
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-- [Demo](https://aquamarine-mooncake-733b87.netlify.app)
-- [Repository](https://github.com/JJWizardMP/Grand-Oasis-Cancun-Test)
+### `npm run eject`
 
-## Imágenes
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-### Vista de la tabla
-![](./front-end/assets/views/view_table.png)
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-## Tecnologías usadas
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-#### FRONTEND
-| [React](https://reactjs.org/) |  [React Dom](https://es.reactjs.org/docs/react-dom.html) | [Axios](https://www.npmjs.com/package/axios)  |
-| :-: | :-: | :-: |
+## Learn More
 
-#### BACKEND
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-| [Node](http://nodejs.org/) | [Mysql2](https://github.com/postmanlabs) | [Sequelize](https://github.com/postmanlabs) | [Express](https://github.com/postmanlabs)  |
-| :-: | :-: | :-: | :-: |
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-## Instalar aplicación
+### Code Splitting
 
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Back End:
+### Analyzing the Bundle Size
 
-Para arrancarlo debes moverte a la carpeta "backend" y ejecutar el siguiente comando para instalar las dependencias:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-```sh
-$ npm install 
-```
+### Making a Progressive Web App
 
-Ahora se arracan el servidor del backend con el siguiente comando:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-```sh
-$ npm start 
-```
+### Advanced Configuration
 
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Front End: 
+### Deployment
 
-Para arrancarlo debes moverte a la carpeta "frontend" y ejecutar el siguiente comando para instalar las dependencias:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-```sh
-$ npm install 
-```
+### `npm run build` fails to minify
 
-Ahora se arracan el servidor del frontend con el siguiente comando:
-
-```sh
-$ npm start 
-```
-Esta aplicación fue creada con:
-
-```sh
-$ create-react-app
-``` 
-
-## Contribuidores
-
-Este proyecto fue realizado por:
-- FULLSTACK :
-  - [Joan de Jesús Méndez Pool](https://github.com/JJWizardMP)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
