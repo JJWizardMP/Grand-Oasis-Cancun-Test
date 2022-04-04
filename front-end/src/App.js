@@ -1,20 +1,25 @@
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import "./App.css";
+import NavBar from "./components/navbar/navbar";
+import Details from "./components/details/details";
+import RestaurantsColumn from "./components/restaurantscolumn/restaurantscolumn";
+import BarsColumn from "./components/barscolumn/barscolumn";
 
 function App() {
   // Url
-  //const url = "http://0.0.0.0:5000/apiv1/";
+  const url = "http://0.0.0.0:5000/apiv1";
+  const rest_endpoint = "restaurants";
+  const bars_endpoint = "bars";
+  const hotels_endpoint = "hotels";
   const url_img = "https://api-onow.oasishoteles.net/";
-  const rest_url = "http://0.0.0.0:5000/apiv1/restaurants";
-  const bars_url = "http://0.0.0.0:5000/apiv1/bars";
-  const hot_url = "http://0.0.0.0:5000/apiv1/hotels";
   // Set States
+  const [initapi, setInitapi] = useState(true);
   const [hotel, setHotel] = useState(1);
   const [hotels, setHotels] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [bars, setBars] = useState([]);
-  const [details, setDetails] = useState({state:"state"});
+  const [details, setDetails] = useState({});
   // Date and Hours values
   const [day] = useState(new Date().getDay() + 1);
   const [date] = useState(
@@ -50,15 +55,14 @@ function App() {
     let idcent = parseInt(e.target.getAttribute("data-id"));
     setDetails(bars.concat(restaurants).filter((e) => e.id === idcent)[0]);
   };
-
+  //Handle change hotel
   const handleChangeHotel = (e) => {
     let value = parseInt(e.target.value);
     setHotel(value);
-    //setHotel(value);
-    const getData = async (url_api, hotel) => {
+    const getData = async (url_api, endpoint, hotel) => {
       try {
         let response = await Axios({
-          url: `${url_api}/${day}/${hotel}/${hour}`,
+          url: `${url_api}/${endpoint}/${day}/${hotel}/${hour}`,
           method: "get",
           timeout: 8000,
           headers: {
@@ -72,16 +76,16 @@ function App() {
         console.error(err);
       }
     };
-    getData(bars_url, value).then((res) => setBars(res));
-    getData(rest_url, value).then((res) => setRestaurants(res));
+    getData(url, bars_endpoint, value).then((res) => setBars(res));
+    getData(url, rest_endpoint, value).then((res) => setRestaurants(res));
   };
   useEffect(() => {
-    const interval = setInterval(() => setHour(hourobject(), 1000));
+    const interval = setInterval(() => setHour(hourobject(), 60 * 1000));
     // Request to api
-    const getData = async (url_api) => {
+    const getData = async (url_api, endpoint) => {
       try {
         let response = await Axios({
-          url: `${url_api}/${day}/${hotel}/${hour}`,
+          url: `${url_api}/${endpoint}/${day}/${hotel}/${hour}`,
           method: "get",
           timeout: 8000,
           headers: {
@@ -96,10 +100,10 @@ function App() {
       }
     };
 
-    const getHotels = async (url_api) => {
+    const getHotels = async (url_api, endpoint) => {
       try {
         let response = await Axios({
-          url: `${url_api}`,
+          url: `${url_api}/${endpoint}`,
           method: "get",
           timeout: 8000,
           headers: {
@@ -112,124 +116,49 @@ function App() {
         console.error(err);
       }
     };
-    getHotels(hot_url).then((res) => setHotels(res));
-    getData(bars_url).then((res) => setBars(res));
-    getData(rest_url).then((res) => setRestaurants(res));
-    
+    if (initapi) {
+      setInitapi(false)
+      getHotels(url, hotels_endpoint).then((res) => setHotels(res));
+      getData(url, bars_endpoint).then((res) => setBars(res));
+      getData(url, rest_endpoint).then((res) => setRestaurants(res));
+    }
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [day, hotel, hour, initapi]);
 
   return (
     <div className="App">
-      <div className="navbar">
-        <section id="greeting">
-          <p className="title">GRAND OASIS CANCUN &ensp;| </p>
-          <p className="hour">{hours12(hour)}</p>
-          <p className="date">{date}</p>
-        </section>
-        <section id="hotelsform">
-          <label htmlFor="hotels">Choose a hotel :&ensp;</label>
-          <select name="hotels" id="hotels" onChange={handleChangeHotel}>
-            {hotels.map((res, ind) => (
-              <option value={res.id} key={ind}>
-                {res.nombre}
-              </option>
-            ))}
-          </select>
-        </section>
-      </div>
+      <NavBar
+        hours12={hours12}
+        handleChangeHotel={handleChangeHotel}
+        hour={hour}
+        date={date}
+        hotels={hotels}
+      />
       <section className="container">
         <div className="column">
           <h1 className="coltitle">Restaurantes</h1>
           <div>
-            {restaurants && (
-              <>
-                {restaurants.map((res, ind) => (
-                  <div className="card" id={res.id} key={ind}>
-                    <h5 id="name">{res.nombre}</h5>
-                    <p id="concept">{res.concepto_en}</p>
-                    <p id="concept">{res.concepto_es}</p>
-                    <div className="innercard">
-                      <div className="innertimecard">
-                        <span id="isopen"> ABIERTO HOY </span>
-                        <p id="time">
-                          {" "}
-                          {hours12(res.hora_inicio)} - {hours12(res.hora_final)}
-                        </p>
-                      </div>
-                      <button
-                        className="incbutton"
-                        data-id={res.id}
-                        onClick={handleChange}
-                      >
-                        VER MÁS
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
+            <RestaurantsColumn
+              restaurants={restaurants}
+              hours12={hours12}
+              handleChange={handleChange}
+            />
           </div>
         </div>
         <div className="column-bar">
           <h1 className="coltitle">Bares</h1>
           <div>
-            {bars && (
-              <>
-                {bars.map((bar, ind) => (
-                  <div className="card-bar" key={ind}>
-                    <h5 id="name">{bar.nombre}</h5>
-                    <div className="innercard-bar">
-                      <div>
-                        {" "}
-                        <span id="isopen"> ABIERTO HOY </span>
-                        <p id="time">
-                          {" "}
-                          {hours12(bar.hora_inicio)} - {hours12(bar.hora_final)}
-                        </p>{" "}
-                      </div>
-
-                      <button
-                        className="incbutton-bar"
-                        data-id={bar.id}
-                        onClick={handleChange}
-                      >
-                        VER MÁS
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
+            <BarsColumn
+              bars={bars}
+              hours12={hours12}
+              handleChange={handleChange}
+            />
           </div>
         </div>
         <div className="column-result">
-          {details.hasOwnProperty("id") && (
-            <>
-              <img
-                src={url_img + details.img_portada}
-                id="background"
-                alt="logo"
-              />
-              <img src={url_img + details.logo} id="logo" alt="business" />
-              <div className="detailsdiv">
-                <div id="ddesc">
-                  <p id="dtitle">{details.nombre}</p>
-                  <p>{details.concepto_en}</p>
-                  <p>{details.concepto_es}</p>
-                </div>
-                <div id="dtime">
-                  <span> ABIERTO HOY </span>
-                  <p>
-                    {hours12(details.hora_inicio)} -{" "}
-                    {hours12(details.hora_final)}
-                  </p>
-                </div>
-              </div>
-            </>
-          )}
+          <Details hours12={hours12} url_img={url_img} details={details} />
         </div>
       </section>
     </div>
