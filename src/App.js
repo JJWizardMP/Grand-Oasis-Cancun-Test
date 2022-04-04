@@ -8,7 +8,7 @@ import BarsColumn from "./components/barscolumn/barscolumn";
 
 function App() {
   // Url
-  const url = "http://0.0.0.0:5000/apiv1";
+  const url = "https://oasis-express-app.herokuapp.com/apiv1";
   const rest_endpoint = "restaurants";
   const bars_endpoint = "bars";
   const hotels_endpoint = "hotels";
